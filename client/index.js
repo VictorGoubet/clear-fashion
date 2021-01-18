@@ -328,8 +328,11 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
-
-
+delete jacket.favorite;
+jacket = {...blueJacket};
+jacket.favorite = true;
+console.log(blueJacket, jacket);
+console.log('Now it works !');
 
 
 

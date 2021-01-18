@@ -14,8 +14,8 @@ const MY_FAVORITE_BRANDS = [{
   'url': 'https://adresse.paris/'
 }]
 
-console.table(MY_FAVORITE_BRANDS);
-console.log(MY_FAVORITE_BRANDS[0]);
+//console.table(MY_FAVORITE_BRANDS);
+//console.log(MY_FAVORITE_BRANDS[0]);
 
 
 
@@ -33,7 +33,20 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
 // 2. Log the variable
+var cheapest_tshirt = '';
+var price = 999999;
 
+MY_FAVORITE_BRANDS.forEach(favorit_brand => {
+  marketplace.forEach(article =>{
+    
+    if(article.brand.toUpperCase() == favorit_brand.name.toUpperCase() && article.price <= price){
+      cheapest_tshirt = article.link;
+      price = article.price;
+    }
+  })
+})
+
+console.log(price + '€ : ' + cheapest_tshirt);
 
 
 

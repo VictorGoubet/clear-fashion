@@ -318,6 +318,8 @@ jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
 // 2. What do you notice?
+console.log(blueJacket, jacket);
+console.log('Notice that when we add a new property to jacket it also add it to blue jacket\nIn fact we have not make a real copy but just a pointer');
 
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',

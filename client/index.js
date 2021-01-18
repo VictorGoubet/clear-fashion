@@ -78,7 +78,7 @@ console.log(brands_name.length);
 function sort_price(a, b){
   return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);
 }
-var by_price = marketplace.sort(sort_price);
+var by_price = [...marketplace].sort(sort_price);
 console.log(by_price);
 
 
@@ -87,12 +87,12 @@ console.log(by_price);
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
-function sort_date(a, b){
+function sort_date_ascending(a, b){
   a = Date.parse(a.date);
   b = Date.parse(b.date);
   return (a > b) ? 1 : ((b > a) ? -1 : 0);
 }
-var by_date = marketplace.sort(sort_date);
+var by_date = [...marketplace].sort(sort_date_ascending);
 console.log(by_date);
 
 
@@ -144,20 +144,38 @@ marketplace.forEach(article => {
   }});
 console.log(brands);
 
+Object.keys(brands).map(e => console.log(brands[e].length));
 
-const brands_by_price = {};
+
+
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
+const brands_by_price = {};
 Object.keys(brands).forEach(k => {
-  brands_by_price[k] = brands[k].sort(sort_price);
+  console.log()
+  brands_by_price[k] = [...brands[k]].sort(sort_price);
 });
-console.log(brands_by_price);
+console.log('brands_by_price', brands_by_price);
+
+
+
+
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
+function sort_date_descending(a, b){
+  a = Date.parse(a.date);
+  b = Date.parse(b.date);
+  return (a > b) ? -1 : ((b > a) ? 1 : 0);
+}
 
+const brands_by_date = {};
+Object.keys(brands).forEach(k => {
+  brands_by_date[k] = [...brands[k]].sort(sort_date_descending);
+});
+console.log('brands_by_date', brands_by_date);
 
 
 
@@ -172,7 +190,12 @@ console.log(brands_by_price);
 // 🎯 TODO: Compute the p90 price value
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
-
+const p90_by_brands = {};
+Object.keys(brands_by_price).forEach(k => {
+  let index = Math.trunc(0.9 * brands_by_price[k].length)
+  p90_by_brands[k] = brands_by_price[k][index].price;
+});
+console.log(p90_by_brands);
 
 
 

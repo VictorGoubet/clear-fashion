@@ -33,20 +33,8 @@ const MY_FAVORITE_BRANDS = [{
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
 // 2. Log the variable
-var cheapest_tshirt = '';
-var price = 999999;
-
-MY_FAVORITE_BRANDS.forEach(favorit_brand => {
-  marketplace.forEach(article =>{
-    
-    if(article.brand.toUpperCase() == favorit_brand.name.toUpperCase() && article.price <= price){
-      cheapest_tshirt = article.link;
-      price = article.price;
-    }
-  })
-})
-
-console.log(price + '€ : ' + cheapest_tshirt);
+var cheapest_tshirt = 'https://www.loom.fr/products/le-t-shirt'
+console.log(cheapest_tshirt);
 
 
 
@@ -60,15 +48,27 @@ console.log(price + '€ : ' + cheapest_tshirt);
  * 👕
  */
 
+
+
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
 // 2. Log the variable
+var l = marketplace.length;
+console.log(l);
 
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
 // 2. Log the variable
 // 3. Log how many brands we have
+var brands_name = [];
+marketplace.forEach(article =>{
+  if(!brands_name.includes(article.brand)){
+    brands_name.push(article.brand)
+  }
+})
+console.log(brands_name);
+console.log(brands_name.length);
 
 
 // 🎯 TODO: Sort by price

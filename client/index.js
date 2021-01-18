@@ -75,7 +75,10 @@ console.log(brands_name.length);
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
-var by_price = marketplace.sort(function(a, b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);});
+function sort_price(a, b){
+  return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);
+}
+var by_price = marketplace.sort(sort_price);
 console.log(by_price);
 
 
@@ -134,19 +137,22 @@ console.log(average);
 const brands = {};
 marketplace.forEach(article => {
   try{
-    brands[article.brand].push(article.name);
+    brands[article.brand].push(article);
   }
   catch{
-    brands[article.brand] = [article.name];
+    brands[article.brand] = [article];
   }});
 console.log(brands);
 
 
-
+const brands_by_price = {};
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
-
+Object.keys(brands).forEach(k => {
+  brands_by_price[k] = brands[k].sort(sort_price);
+});
+console.log(brands_by_price);
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent

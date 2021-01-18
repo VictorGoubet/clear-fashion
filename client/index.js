@@ -345,3 +345,9 @@ console.log('Now it works !');
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
 // 2. log the localStorage
+localStorage.clear();
+console.log('Storage now: ', localStorage);
+localStorage.setItem('MY_FAVORITE_BRANDS', JSON.stringify(MY_FAVORITE_BRANDS));
+console.log('After saving: ', localStorage);
+
+console.log('MY_FAVORITE_BRANDS from local storage: ', JSON.parse(localStorage.getItem('MY_FAVORITE_BRANDS')));

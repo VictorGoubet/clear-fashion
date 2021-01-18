@@ -271,6 +271,15 @@ const COTELE_PARIS = [
 // 🎯 TODO: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
+let date;
+let diff;
+COTELE_PARIS.forEach(e =>{
+  date = Date.parse(e.released);
+  diff = Math.trunc((Date.now() - date) / (1000 * 3600 * 24)); 
+  if(diff > 2*7){
+    console.log(e);
+  }
+})
 
 
 // 🎯 TODO: Reasonable price

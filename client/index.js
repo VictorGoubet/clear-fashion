@@ -75,6 +75,13 @@ console.log(brands_name.length);
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
+function sort_by_price(tab){
+  var sorted_tab = tab.sort(function(a, b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);});
+  console.log(sorted_tab)
+  return sorted_tab
+}
+sort_by_price(marketplace);
+
 
 
 // 🎯 TODO: Sort by date

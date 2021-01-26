@@ -4,12 +4,47 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
+let filtered_products = [];
+let brand_filter = x => {return true};
+let price_filter = x => {return true};
+let date_filter = x => {return true};
 
-// inititiqte selectors
+// inititiate selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
+const selectBrand = document.querySelector('#brand-select');
+const recentlyReleased = document.querySelector('#recently-released');
+const reasonablePrice = document.querySelector('#reasonable-price');
+
+
+// Update brands choice
+
+function update_brands_name(){
+  let old_value = selectBrand.value
+  selectBrand.innerHTML = '<option>all</option>';
+  
+  const brands_name = [];
+  let my_option;
+  currentProducts.forEach(article =>{
+    if(!brands_name.includes(article.brand)){
+      brands_name.push(article.brand)
+      my_option = document.createElement('option');
+      my_option.innerHTML = article.brand;
+      selectBrand.appendChild(my_option);
+    }
+  })
+  selectBrand.value = brands_name.includes(old_value)? old_value:'all';
+}
+
+const apply_all_filters = (products) =>{
+  let filter = [brand_filter, date_filter, price_filter]
+  filter.forEach(f =>{
+    products = products.filter(f)
+  })
+  return products
+}
 
 /**
  * Set global value
@@ -19,6 +54,8 @@ const spanNbProducts = document.querySelector('#nbProducts');
 const setCurrentProducts = ({result, meta}) => {
   currentProducts = result;
   currentPagination = meta;
+  update_brands_name();
+  filtered_products = apply_all_filters(currentProducts)
 };
 
 /**
@@ -113,7 +150,7 @@ const render = (products, pagination) => {
 selectShow.addEventListener('change', event => {
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => render(filtered_products, currentPagination));
 });
 
 // Feature 1 Browse pages
@@ -121,13 +158,48 @@ selectShow.addEventListener('change', event => {
 selectPage.addEventListener('change', event => {
   fetchProducts(parseInt(event.target.value), currentPagination.pageSize)
     .then(setCurrentProducts)
-    .then(() => render(currentProducts, currentPagination));
+    .then(() => render(filtered_products, currentPagination));
 });
 
+// Feature 2 brand selection
+
+selectBrand.addEventListener('change', event => {
+  brand_filter = x =>{return event.target.value=='all'? true:x.brand == event.target.value}
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+// Feature 3 date selection
+
+recentlyReleased.addEventListener('change', function(){
+
+  if(this.checked){
+    date_filter = x => {return  Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7}
+  }
+  else{
+    date_filter = x => {return true}
+  }
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+// Feature 4 price selection
+
+reasonablePrice.addEventListener('change', function(){
+
+  if(this.checked){
+    price_filter = x => {return  x.price <= 50}
+  }
+  else{
+    price_filter = x => {return true}
+  }
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
 //---------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
     .then(setCurrentProducts)
-    .then(() => render(currentProducts, currentPagination))
+    .then(() => render(filtered_products, currentPagination))
 );

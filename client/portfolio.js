@@ -19,6 +19,9 @@ const selectBrand = document.querySelector('#brand-select');
 const selectSort = document.querySelector('#sort-select');
 const recentlyReleased = document.querySelector('#recently-released');
 const reasonablePrice = document.querySelector('#reasonable-price');
+const spanP50 = document.querySelector('#p50');
+const spanP90 = document.querySelector('#p90');
+const spanP95 = document.querySelector('#p95');
 
 
 // Update brands choice
@@ -129,8 +132,18 @@ const renderPagination = pagination => {
  * Render page selector
  * @param  {Object} pagination
  */
+
+ const compute_pk = k =>{
+   let tab = [...currentProducts].sort((a, b) => sort_price(a, b, 1));
+   let index = Math.trunc(k/100 * tab.length)
+   return tab[index].price
+ }
+
 const renderIndicators = pagination => {
   const {count} = pagination;
+  spanP50.innerHTML = compute_pk(50);
+  spanP90.innerHTML = compute_pk(90);
+  spanP95.innerHTML = compute_pk(95);
   spanNbNewProducts.innerHTML = currentProducts.reduce((total, x) => total+(Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7?1:0), 0);
   spanNbProducts.innerHTML = count;
 };

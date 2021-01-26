@@ -22,6 +22,8 @@ const reasonablePrice = document.querySelector('#reasonable-price');
 const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95');
+const spanLastRelease = document.querySelector('#last-release');
+
 
 
 // Update brands choice
@@ -144,6 +146,7 @@ const renderIndicators = pagination => {
   spanP50.innerHTML = compute_pk(50);
   spanP90.innerHTML = compute_pk(90);
   spanP95.innerHTML = compute_pk(95);
+  spanLastRelease.innerHTML = [...currentProducts].sort((a, b) => sort_date(a, b, -1))[0].released;
   spanNbNewProducts.innerHTML = currentProducts.reduce((total, x) => total+(Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7?1:0), 0);
   spanNbProducts.innerHTML = count;
 };

@@ -6,8 +6,8 @@ let currentProducts = [];
 let currentPagination = {};
 let filtered_products = [];
 let brand_filter = x => {return true};
-let price_filter = x => {return true};
-let date_filter = x => {return true};
+let reasonable_filter = x => {return true};
+let recent_filter = x => {return true};
 
 // inititiate selectors
 const selectShow = document.querySelector('#show-select');
@@ -15,6 +15,7 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
+const selectSort = document.querySelector('#sort-select');
 const recentlyReleased = document.querySelector('#recently-released');
 const reasonablePrice = document.querySelector('#reasonable-price');
 
@@ -39,7 +40,7 @@ function update_brands_name(){
 }
 
 const apply_all_filters = (products) =>{
-  let filter = [brand_filter, date_filter, price_filter]
+  let filter = [brand_filter, reasonable_filter, recent_filter]
   filter.forEach(f =>{
     products = products.filter(f)
   })
@@ -174,10 +175,10 @@ selectBrand.addEventListener('change', event => {
 recentlyReleased.addEventListener('change', function(){
 
   if(this.checked){
-    date_filter = x => {return  Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7}
+    recent_filter = x => {return  Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7}
   }
   else{
-    date_filter = x => {return true}
+    recent_filter = x => {return true}
   }
   filtered_products = apply_all_filters(currentProducts)
   render(filtered_products, currentPagination);
@@ -188,14 +189,48 @@ recentlyReleased.addEventListener('change', function(){
 reasonablePrice.addEventListener('change', function(){
 
   if(this.checked){
-    price_filter = x => {return  x.price <= 50}
+    reasonable_filter = x => {return  x.price <= 50}
   }
   else{
-    price_filter = x => {return true}
+    reasonable_filter = x => {return true}
   }
   filtered_products = apply_all_filters(currentProducts)
   render(filtered_products, currentPagination);
 });
+
+// Feature 5-6 price selection
+
+function sort_price(a, b, order){
+  return (a.price > b.price) ? order : ((b.price > a.price) ? -order : 0);
+}
+
+function sort_date(a, b, order){
+  a = Date.parse(a.released);
+  b = Date.parse(b.released);
+  return (a > b) ? order : ((b > a) ? -order : 0);
+}
+
+selectSort.addEventListener('change', event=>{
+
+  switch(event.target.value){
+    case 'price-desc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_price(a, b, -1));
+      break;
+    case 'price-asc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_price(a, b, 1));
+      break;
+    case 'date-desc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_date(a, b, 1));
+      break;
+    case 'date-asc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_date(a, b, -1));
+      break;
+  }
+
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
 //---------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () =>

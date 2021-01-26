@@ -5,11 +5,10 @@
 let currentProducts = [];
 let currentPagination = {};
 let filtered_products = [];
-let favoris = []
 let brand_filter = x => {return true};
 let reasonable_filter = x => {return true};
 let recent_filter = x => {return true};
-localStorage.clear();
+console.log(localStorage)
 
 
 // inititiate selectors
@@ -255,16 +254,20 @@ selectSort.addEventListener('change', event=>{
 // Feature 12 favoris
 
 function addFavoris(id){
-  let x = currentProducts.filter(x => x.uuid == id)
-  if(!favoris.includes(x)){
+
+  let x = currentProducts.filter(x => x.uuid == id)[0]
+  let favoris = JSON.parse(localStorage.getItem('favoris'))
+  
+  if(favoris == null){
+    localStorage.setItem('favoris', JSON.stringify([x]));
+  }
+  else if(favoris.filter(x => x.uuid == id)==0){
+    console.log()
     favoris.push(x);
     localStorage.setItem('favoris', JSON.stringify(favoris));
-    console.log(localStorage);
+    
   }
-  else{
-    console.log('already in favoris!')
-  }
-  
+  console.log(localStorage)
 }
 
 //---------------------------------------------------------------------

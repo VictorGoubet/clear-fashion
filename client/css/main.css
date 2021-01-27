@@ -110,7 +110,7 @@ a:hover {
   background: #fff;
   border-radius: 10px;
   overflow: auto;
-  padding: 42px 55px 45px 55px;
+  padding: 40px;
 }
 
 .title-pattern {
@@ -124,17 +124,28 @@ a:hover {
 }
 
 .option {
-  width: 25%;
+  width: 20%;
   float:left;
   padding:40px;
 }
 
 .products {
-  width: 40%;
+  width: 45%;
   float:left;
   padding:40px;
-  
+  background:rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  overflow: auto;
+  height:610px;
 }
+
+.product{
+  margin:20px 0px 20px 0px;
+  border-bottom: 2px solid #d9d9d9;
+  padding-bottom: 13px;
+
+}
+
 .indicators{
   width: 35%;
   float:left;
@@ -145,6 +156,14 @@ a:hover {
   padding-left: 3em;
 }
 
+.imgPrdt{
+  width:200px;
+  display: block;
+  margin-top: 10px;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /*------------------------------------------------------------------
 [ Input ]*/

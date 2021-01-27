@@ -106,10 +106,11 @@ const renderProducts = products => {
       let content = favoris!=null?(favoris.filter(x => x.uuid == product.uuid).length>0?'⭕':'⭐'):'⭐';
       return `
       <div class="product" id=${product.uuid}>
-        <span>${product.brand}</span>
+      <button onclick="addFavoris('${product.uuid}','${content}')">${content}</button>
+        <span>${product.brand.charAt(0).toUpperCase() + product.brand.slice(1)}</span>
         <a href="${product.link}">${product.name}</a>
-        <span>${product.price}</span>
-        <button onclick="addFavoris('${product.uuid}','${content}')">${content}</button>
+        <span>${product.price}€</span>
+        <img class='imgPrdt' src=${product.photo}>
       </div>
     `;
     })

@@ -102,12 +102,14 @@ const renderProducts = products => {
   const div = document.createElement('div');
   const template = products
     .map(product => {
+      let favoris = JSON.parse(localStorage.getItem('favoris'))
+      let content = favoris!=null?(favoris.filter(x => x.uuid == product.uuid).length>0?'⭕':'⭐'):'⭐';
       return `
       <div class="product" id=${product.uuid}>
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
-        <button onclick="addFavoris('${product.uuid}')">💖</button>
+        <button onclick="addFavoris('${product.uuid}','${content}')">${content}</button>
       </div>
     `;
     })
@@ -254,8 +256,7 @@ selectSort.addEventListener('change', event=>{
 
 // Feature 12 favoris
 
-function addFavoris(id){
-
+function addFavoris(id, content){
   let x = currentProducts.filter(x => x.uuid == id)[0]
   let favoris = JSON.parse(localStorage.getItem('favoris'))
   
@@ -263,12 +264,14 @@ function addFavoris(id){
     localStorage.setItem('favoris', JSON.stringify([x]));
   }
   else if(favoris.filter(x => x.uuid == id).length==0){
-    console.log()
     favoris.push(x);
     localStorage.setItem('favoris', JSON.stringify(favoris));
-    
   }
-  console.log(localStorage)
+  else{
+    favoris = favoris.filter(x => x.uuid != id)
+    localStorage.setItem('favoris', JSON.stringify(favoris));
+  }
+  render(filtered_products, currentPagination);
 }
 
 // Feature 13: filter favoris 

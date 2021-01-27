@@ -5,10 +5,10 @@
 let currentProducts = [];
 let currentPagination = {};
 let filtered_products = [];
-let brand_filter = x => {return true};
-let reasonable_filter = x => {return true};
-let recent_filter = x => {return true};
-console.log(localStorage)
+let brand_filter = x => true;
+let reasonable_filter = x => true;
+let recent_filter = x => true;
+let favoris_filter = x => true;
 
 
 // inititiate selectors
@@ -25,6 +25,7 @@ const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95');
 const spanLastRelease = document.querySelector('#last-release');
+const favorisInput = document.querySelector('#favoris');
 
 
 
@@ -48,7 +49,7 @@ function update_brands_name(){
 }
 
 const apply_all_filters = (products) =>{
-  let filter = [brand_filter, reasonable_filter, recent_filter]
+  let filter = [brand_filter, reasonable_filter, recent_filter, favoris_filter]
   filter.forEach(f =>{
     products = products.filter(f)
   })
@@ -198,7 +199,7 @@ recentlyReleased.addEventListener('change', function(){
     recent_filter = x => {return  Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7}
   }
   else{
-    recent_filter = x => {return true}
+    recent_filter = x => true
   }
   filtered_products = apply_all_filters(currentProducts)
   render(filtered_products, currentPagination);
@@ -209,10 +210,10 @@ recentlyReleased.addEventListener('change', function(){
 reasonablePrice.addEventListener('change', function(){
 
   if(this.checked){
-    reasonable_filter = x => {return  x.price <= 50}
+    reasonable_filter = x => {return x.price <= 50};
   }
   else{
-    reasonable_filter = x => {return true}
+    reasonable_filter = x => true;
   }
   filtered_products = apply_all_filters(currentProducts)
   render(filtered_products, currentPagination);
@@ -261,7 +262,7 @@ function addFavoris(id){
   if(favoris == null){
     localStorage.setItem('favoris', JSON.stringify([x]));
   }
-  else if(favoris.filter(x => x.uuid == id)==0){
+  else if(favoris.filter(x => x.uuid == id).length==0){
     console.log()
     favoris.push(x);
     localStorage.setItem('favoris', JSON.stringify(favoris));
@@ -270,6 +271,23 @@ function addFavoris(id){
   console.log(localStorage)
 }
 
+// Feature 13: filter favoris 
+
+
+favorisInput.addEventListener('change', function(){
+
+  if(this.checked){
+    let favoris = JSON.parse(localStorage.getItem('favoris'))
+    favoris_filter = favoris!=null? x =>favoris.filter(y => y.uuid == x.uuid).length>0:x=>false;
+  }
+  else{
+    favoris_filter = x =>true;
+  }
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+
 //---------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () =>
@@ -277,3 +295,6 @@ document.addEventListener('DOMContentLoaded', () =>
     .then(setCurrentProducts)
     .then(() => render(filtered_products, currentPagination))
 );
+
+
+

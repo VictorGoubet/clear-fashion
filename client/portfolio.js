@@ -143,19 +143,29 @@ const renderPagination = pagination => {
  */
 
  const compute_pk = k =>{
-   let tab = [...currentProducts].sort((a, b) => sort_price(a, b, 1));
+   let tab = [...filtered_products].sort((a, b) => sort_price(a, b, 1));
    let index = Math.trunc(k/100 * tab.length)
    return tab[index].price
  }
 
 const renderIndicators = pagination => {
-  const {count} = pagination;
-  spanP50.innerHTML = compute_pk(50)+'€';
-  spanP90.innerHTML = compute_pk(90)+'€';
-  spanP95.innerHTML = compute_pk(95)+'€';
-  spanLastRelease.innerHTML = [...currentProducts].sort((a, b) => sort_date(a, b, -1))[0].released;
-  spanNbNewProducts.innerHTML = currentProducts.reduce((total, x) => total+(Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7?1:0), 0);
-  spanNbProducts.innerHTML = count;
+  if(filtered_products.length>0){
+    spanP50.innerHTML = compute_pk(50)+'€';
+    spanP90.innerHTML = compute_pk(90)+'€';
+    spanP95.innerHTML = compute_pk(95)+'€';
+    spanLastRelease.innerHTML = [...filtered_products].sort((a, b) => sort_date(a, b, -1))[0].released;
+    spanNbNewProducts.innerHTML = filtered_products.reduce((total, x) => total+(Math.trunc((Date.now() - Date.parse(x.released)) / (1000 * 3600 * 24)) < 2*7?1:0), 0);
+    spanNbProducts.innerHTML = filtered_products.length;
+  }
+  else{
+    spanP50.innerHTML = 0
+    spanP90.innerHTML = 0
+    spanP95.innerHTML = 0
+    spanLastRelease.innerHTML = '----'
+    spanNbNewProducts.innerHTML = 0
+    spanNbProducts.innerHTML = 0
+  }
+  
 };
 
 const render = (products, pagination) => {

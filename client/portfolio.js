@@ -104,13 +104,14 @@ const renderProducts = products => {
     .map(product => {
       let favoris = JSON.parse(localStorage.getItem('favoris'))
       let content = favoris!=null?(favoris.filter(x => x.uuid == product.uuid).length>0?'⭕':'⭐'):'⭐';
+      let url = product.photo.includes('https:')? product.photo:'https:'+product.photo;
       return `
       <div class="product" id=${product.uuid}>
       <button onclick="addFavoris('${product.uuid}','${content}')">${content}</button>
         <span>${product.brand.charAt(0).toUpperCase() + product.brand.slice(1)}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}€</span>
-        <img class='imgPrdt' src=${product.photo}>
+        <img class='imgPrdt' src=${url}>
       </div>
     `;
     })

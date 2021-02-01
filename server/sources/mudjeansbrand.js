@@ -1,7 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const brand = 'Dedicated'
+const brand = 'Mud Jeans'
 /**
  * Parse webpage e-shop
  * @param  {String} data - html response
@@ -10,12 +10,14 @@ const brand = 'Dedicated'
 const parse = data => {
   const $ = cheerio.load(data);
 
-  return $('.productList-container .productList')
+  return $('.product-link .row')
     .map((i, element) => {
       
       const name = $(element)
-        .find('.productList-title')
-        .text()
+        .find('.product-meta')
+        .find('.product-title')
+        .find('a')
+        .attr('href')
         .trim()
         .replace(/\s/g, ' ');
 

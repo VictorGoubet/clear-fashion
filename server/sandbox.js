@@ -6,18 +6,23 @@ async function sandbox(eshop) {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop.brand} source`);
     const products = await scrapper.scrape(eshop);
-
-    console.log(products, products.length);
+    /*
+    products.forEach(p =>{
+      if(products.filter(x => x.uuid == p.uuid).length>2){
+        console.log(p)
+      }
+    })*/
+    //console.log(products, products.length);
     console.log('done');
     process.exit(0);
 
   } catch (e) {
-    console.error(e);
+    //console.error(e);
     process.exit(1);
   }
 }
 
-sandbox(eshop[2])
+sandbox(eshop[0])
 
 /*
 eshop.forEach(x => {

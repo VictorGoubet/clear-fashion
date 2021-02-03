@@ -27,21 +27,23 @@ const parse = data => {
       const link = $(element)
         .find('.product_img_link')
         .attr('href')
+
+      const release = '03/02/2021'
         
       const uuid = link.slice(-18, -5)
 
-      return {uuid, name, price, photo, link, brand};
+      return {uuid, name, price, photo, link, brand, release};
     })
     .get();
 };
 
 
-const get_links = (data) =>{
+const get_links = (data, url) =>{
   const $ = cheerio.load(data);
   const num = $('.pagination li:nth-last-child(2)').find('a').attr('href').slice(-1)
   res = []
   for(i=1; i<=parseInt(num); i++){
-    res.push(`https://adresse.paris/630-toute-la-collection?p=${i}`)
+    res.push(`${url}?p=${i}`)
   }
   return res
 }

@@ -41,20 +41,12 @@ const parse = data => {
     .get();
 };
 
-/**
- * Scrape all the products for a given url page
- * @param  {[type]}  url
- * @return {Array|null}
- */
-module.exports.scrape = async url => {
-  const response = await axios(url);
-  const {data, status} = response;
+const get_links = (data, url) =>{
+  page = ['women-jeans', 'men']
+  return page.forEach(x => {
+    return url + '/' + x
+  });
+}
 
-  if (status >= 200 && status < 300) {
-    return parse(data);
-  }
 
-  console.error(status);
-
-  return null;
-};
+module.exports = {get_links, parse}

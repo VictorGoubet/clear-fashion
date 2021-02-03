@@ -31,8 +31,10 @@ const parse = (data, url) => {
       const uuid = $(element)
           .find('a')
           .attr('data-id')
+        
+      const release = '03/02/2021'
 
-      return {uuid, name, price, photo, link, brand};
+      return {uuid, name, price, photo, link, brand, release};
     })
     .get();
 };
@@ -43,13 +45,12 @@ const get_links = (data, url) =>{
   let res = []
   const toInclude = ['men', 'kids']
   const notToInclude = ['sale', 'news']
-  $('.mainNavigation-link-subMenu-link').map((i, element) => {
+  return $('.mainNavigation-link-subMenu-link').map((i, element) => {
     const l = url + $(element).find('a').attr('href').slice(4)
     if(!notToInclude.some(x => l.includes(x)) && toInclude.some(x => l.includes(x))){
-      res.push(l)
+      return `${l}#page=1000`
     }
   })
-  return res;
 }
 
 module.exports = {get_links, parse}

@@ -1,25 +1,29 @@
 /* eslint-disable no-console, no-process-exit */
-const dedicatedbrand = require('./sources/dedicatedbrand');
-const adressbrand = require('./sources/adressbrand');
-const mudjeansbrand = require('./sources/mudjeansbrand');
+const scrapper = require('./sources/scrapper')
+const eshop = require('./brands.json');
 
-async function sandbox (eshop) {
+async function sandbox(eshop) {
   try {
-    console.log(`🕵️‍♀️  browsing ${eshop} source`);
+    console.log(`🕵️‍♀️  browsing ${eshop.brand} source`);
+    const products = await scrapper.scrape(eshop);
 
-    const products = await mudjeansbrand.scrape(eshop);
-
-    console.log(products);
+    console.log(products, products.length);
     console.log('done');
     process.exit(0);
+
   } catch (e) {
     console.error(e);
     process.exit(1);
   }
 }
 
-const [,, eshop] = process.argv;
+sandbox(eshop[2])
 
-//sandbox('https://adresse.paris/630-toute-la-collection');
-sandbox('https://mudjeans.eu/collections/men');
+/*
+eshop.forEach(x => {
+  sandbox(x);
+})
+*/
+
+
 

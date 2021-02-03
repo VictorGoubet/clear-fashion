@@ -1,12 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-
 const brand = 'ADRESSE Paris'
-/**
- * Parse webpage e-shop
- * @param  {String} data - html response
- * @return {Array} products
- */
+
 const parse = data => {
   const $ = cheerio.load(data);
   return $('.product_list .product-container')
@@ -32,26 +27,23 @@ const parse = data => {
       const link = $(element)
         .find('.product_img_link')
         .attr('href')
+        
+      const uuid = link.slice(-18, -5)
 
-      return {name, price, photo, link, brand};
+      return {uuid, name, price, photo, link, brand};
     })
     .get();
 };
 
-/**
- * Scrape all the products for a given url page
- * @param  {[type]}  url
- * @return {Array|null}
- */
-module.exports.scrape = async url => {
-  const response = await axios(url);
-  const {data, status} = response;
 
-  if (status >= 200 && status < 300) {
-    return parse(data);
+const get_links = (data) =>{
+  const $ = cheerio.load(data);
+  const num = $('.pagination li:nth-last-child(2)').find('a').attr('href').slice(-1)
+  res = []
+  for(i=1; i<=parseInt(num); i++){
+    res.push(`https://adresse.paris/630-toute-la-collection?p=${i}`)
   }
+  return res
+}
 
-  console.error(status);
-
-  return null;
-};
+module.exports = {get_links, parse}

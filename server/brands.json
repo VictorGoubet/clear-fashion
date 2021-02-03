@@ -2,16 +2,19 @@
   {
     "brand": "DEDICATED",
     "overview": "excellent",
-    "rating": 85.5
+    "rating": 85.5,
+    "link":"https://www.dedicatedbrand.com/en/"
   },
   {
     "brand": "Mud Jeans",
     "overview": "excellent",
-    "rating": 93.75
+    "rating": 93.75,
+    "link":"https://mudjeans.eu/collections/men"
   },
   {
     "brand": "ADRESSE Paris",
     "overview": "Très bien",
-    "rating": 62.75
+    "rating": 62.75,
+    "link":"https://adresse.paris/630-toute-la-collection"
   }
 ]

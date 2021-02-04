@@ -28,7 +28,7 @@ const parse = (data, url) => {
 
       const release = '28/01/2021'
 
-      const uuid = Math.floor(Math.random() * 10000000) + 1;
+      const uuid = parseInt(photo.slice(-10));
 
       return {uuid, name, price, photo, link, brand, release};
     })

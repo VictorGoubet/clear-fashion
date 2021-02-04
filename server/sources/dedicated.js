@@ -28,9 +28,9 @@ const parse = (data, url) => {
         .find('.productList-link')
         .attr('href').slice(4)
 
-      const uuid = $(element)
+      const uuid = parseInt($(element)
           .find('a')
-          .attr('data-id')
+          .attr('data-id'))
         
       const release = '03/02/2021'
 

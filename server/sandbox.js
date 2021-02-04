@@ -23,13 +23,14 @@ function del_doublons(tab){
   return new_tab
 }
 
+
 const start = async () => {
   let all_products = []
   await scrapper.asyncForEach(eshop, async s =>{
     all_products = all_products.concat(await sandbox(s))
   })
   all_products = del_doublons(all_products)
-  console.log('Number of scraped products: '+all_products.length)
+  console.log('Number of scraped products: ' + all_products.length)
 
 }
 

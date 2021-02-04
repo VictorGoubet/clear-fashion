@@ -29,7 +29,7 @@ const parse = data => {
 
       const release = '03/02/2021'
         
-      const uuid = link.slice(-18, -5)
+      const uuid = parseInt(link.slice(-18, -5))
 
       return {uuid, name, price, photo, link, brand, release};
     })

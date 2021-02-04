@@ -1,50 +1,44 @@
-const axios = require('axios');
 const cheerio = require('cheerio');
-
 const brand = 'Mud Jeans'
-/**
- * Parse webpage e-shop
- * @param  {String} data - html response
- * @return {Array} products
- */
-const parse = data => {
-  const $ = cheerio.load(data);
 
-  return $('.product-link .row')
-    .map((i, element) => {
-      
+const parse = (data, url) => {
+  const $ = cheerio.load(data);
+  return $('.product-link').map((i, element) => {
       const name = $(element)
-        .find('.product-meta')
         .find('.product-title')
         .find('a')
-        .attr('href')
+        .text()
         .trim()
         .replace(/\s/g, ' ');
 
-      const price = parseInt(
-        $(element)
-          .find('.productList-price')
-          .text()
-      );
+      const price =parseInt($(element)
+        .find('.product-price')
+        .text().slice(4, -1))
 
-      const photo = $(element)
-        .find('.productList-image')
-        .find('img')
-        .attr('src')
+      const photo = 'https://'+$(element)
+        .find('picture')
+        .find('source')
+        .attr('srcset')
+        .split(',').pop().slice(2, -3);
       
-      const link = 'https://www.dedicatedbrand.com' + $(element)
-        .find('.productList-link')
-        .attr('href')
+      const link = url + $(element)
+        .find('.product-title')
+        .find('a')
+        .attr('href');
 
-      return {name, price, photo, link, brand};
+      const release = '28/01/2021'
+
+      const uuid = Math.floor(Math.random() * 10000000) + 1;
+
+      return {uuid, name, price, photo, link, brand, release};
     })
     .get();
 };
 
 const get_links = (data, url) =>{
   page = ['women-jeans', 'men']
-  return page.forEach(x => {
-    return url + '/' + x
+  return page.map(x => {
+    return `${url}/collections/${x}`
   });
 }
 

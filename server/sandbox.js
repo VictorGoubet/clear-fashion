@@ -1,34 +1,44 @@
-/* eslint-disable no-console, no-process-exit */
+
 const scrapper = require('./sources/scrapper')
 const eshop = require('./brands.json');
 
-async function sandbox(eshop) {
+function sandbox(eshop) {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop.brand} source`);
-    const products = await scrapper.scrape(eshop);
-    /*
-    products.forEach(p =>{
-      if(products.filter(x => x.uuid == p.uuid).length>2){
-        console.log(p)
-      }
-    })*/
-    //console.log(products, products.length);
-    console.log('done');
-    process.exit(0);
-
-  } catch (e) {
-    //console.error(e);
-    process.exit(1);
+    return scrapper.scrape(eshop);
+  } 
+  catch (e) {
+    console.log(e)
+    return [];
   }
 }
 
-sandbox(eshop[0])
+function del_doublons(tab){
+  let new_tab = []
+  tab.forEach(a=>{
+    if(new_tab.filter(x => x.uuid == a.uuid).length==0){
+      new_tab.push(a)
+    }
+  })
+  return new_tab
+}
 
-/*
-eshop.forEach(x => {
-  sandbox(x);
-})
-*/
+const start = async () => {
+  let all_products = []
+  await scrapper.asyncForEach(eshop, async s =>{
+    all_products = all_products.concat(await sandbox(s))
+  })
+  all_products = del_doublons(all_products)
+  console.log('Number of scraped products: '+all_products.length)
+
+}
+
+start()
+
+
+
+
+
 
 
 

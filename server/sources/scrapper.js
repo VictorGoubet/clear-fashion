@@ -22,11 +22,10 @@ async function asyncForEach(array, callback) {
     await asyncForEach(shoptools.get_links(data, shop.link), async (l) => {
       data = await get_data(l)
       let x = shoptools.parse(data, shop.link)
-      console.log(x.length)
-      res = res.concat();
+      res = res.concat(x);
     });
     return res
   };
   
   
-  module.exports.scrape = scrape
+  module.exports = {scrape, asyncForEach}

@@ -16,7 +16,7 @@ function sandbox(eshop) {
 function del_doublons(tab){
   let new_tab = []
   tab.forEach(a=>{
-    if(new_tab.filter(x => x.uuid == a.uuid).length==0){
+    if(a!=undefined && new_tab.filter(x => x.uuid == a.uuid).length==0){
       new_tab.push(a)
     }
   })
@@ -31,7 +31,6 @@ const start = async () => {
   })
   all_products = del_doublons(all_products)
   console.log('Number of scraped products: ' + all_products.length)
-
 }
 
 start()

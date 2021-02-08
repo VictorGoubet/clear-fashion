@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const brand = 'ADRESSE Paris'
 
-const parse = data => {
+const parse = (data) => {
   const $ = cheerio.load(data);
   return $('.product_list .product-container')
     .map((i, element) => {
@@ -31,7 +31,7 @@ const parse = data => {
         
       const uuid = parseInt(link.slice(-18, -5))
 
-      return {uuid, name, price, photo, link, brand, release};
+      return {uuid, name, price, photo, link, brand, release, "categorie":'Unisexe'};
     })
     .get();
 };

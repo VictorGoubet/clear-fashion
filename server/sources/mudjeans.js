@@ -1,7 +1,8 @@
 const cheerio = require('cheerio');
 const brand = 'Mud Jeans'
 
-const parse = (data, url) => {
+const parse = (data, global_url, url) => {
+  ctg = url.includes('women')?'Women':'Men'
   const $ = cheerio.load(data);
   return $('.product-link').map((i, element) => {
       const name = $(element)
@@ -21,7 +22,7 @@ const parse = (data, url) => {
         .attr('srcset')
         .split(',').pop().slice(2, -3);
       
-      const link = url + $(element)
+      const link = global_url + $(element)
         .find('.product-title')
         .find('a')
         .attr('href');
@@ -30,7 +31,7 @@ const parse = (data, url) => {
 
       const uuid = parseInt(photo.slice(-10));
 
-      return {uuid, name, price, photo, link, brand, release};
+      return {uuid, name, price, photo, link, brand, release, 'categorie':ctg};
     })
     .get();
 };

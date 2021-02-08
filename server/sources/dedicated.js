@@ -3,54 +3,30 @@ const cheerio = require('cheerio');
 const brand = 'Dedicated'
 
 const parse = (data, url) => {
-  const $ = cheerio.load(data);
-  return $('.productList-container .productList')
-    .map((i, element) => {
-      
-      const name = $(element)
-        .find('.productList-title')
-        .text()
-        .trim()
-        .replace(/\s/g, ' ');
+  ctg = data['filter']['categories']
 
-      const price = parseInt(
-        $(element)
-          .find('.productList-price')
-          .text()
-      );
-
-      const photo = $(element)
-        .find('.productList-image')
-        .find('img')
-        .attr('src')
-      
-      const link = url + $(element)
-        .find('.productList-link')
-        .attr('href').slice(4)
-
-      const uuid = parseInt($(element)
-          .find('a')
-          .attr('data-id'))
-        
-      const release = '03/02/2021'
-
-      return {uuid, name, price, photo, link, brand, release};
-    })
-    .get();
+  return data['products'].map(x =>{
+    if(x!=undefined && x.length!= 0){
+     return  {'uuid': x['uid'],
+              'name': x['name'],
+              'price': x['price']['priceAsNumber'],
+              'photo': x['image'][0],
+              'link': url+x['canonicalUri'],
+              'brand': brand,
+              'release':'28/01/2021',
+              'categorie':ctg['men'].includes(x['id'])? 'Men':ctg['women'].includes(x['id'])?'Women':"Kids"
+            }
+    } 
+  })
 };
 
 
 const get_links = (data, url) =>{
-  const $ = cheerio.load(data);
-  let res = []
-  const toInclude = ['men', 'kids']
-  const notToInclude = ['sale', 'news']
-  return $('.mainNavigation-link-subMenu-link').map((i, element) => {
-    const l = url + $(element).find('a').attr('href').slice(4)
-    if(!notToInclude.some(x => l.includes(x)) && toInclude.some(x => l.includes(x))){
-      return `${l}#page=1000`
-    }
-  })
+  return [url + 'loadfilter']
 }
 
+
 module.exports = {get_links, parse}
+
+
+

@@ -21,7 +21,7 @@ async function asyncForEach(array, callback) {
     let res = []
     await asyncForEach(shoptools.get_links(data, shop.link), async (l) => {
       data = await get_data(l)
-      let x = shoptools.parse(data, shop.link)
+      let x = shoptools.parse(data, shop.link, l)
       res = res.concat(x);
     });
     return res

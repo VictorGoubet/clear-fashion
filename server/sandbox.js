@@ -33,11 +33,10 @@ const start = async () => {
   console.log('Number of scraped products: ' + all_products.length)
 }
 
-start()
 
 
 
-
+module.exports = start
 
 
 

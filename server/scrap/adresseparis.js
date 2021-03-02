@@ -25,11 +25,11 @@ const parse = (data) => {
       
       const link = $(element)
         .find('.product_img_link')
-        .attr('href')
+        .attr('href').match(/.*.html/)[0]
 
       const release = '03/02/2021'
-        
-      const uuid = parseInt(link.slice(-18, -5))
+      
+      const uuid = parseInt(link.match(/\d{13}/)[0])
 
       return {uuid, name, price, photo, link, brand, release, "categorie":'Unisexe'};
     })

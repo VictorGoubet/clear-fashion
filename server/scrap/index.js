@@ -1,11 +1,11 @@
 
 const scrapper = require('./scrapper')
-const eshop = require('../brands.json');
+const eshop = require('./brands.json');
 
 function getScrape(eshop) {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop.brand} source`);
-    return scrapper.scrape(eshop);
+    return scrapper(eshop);
   } 
   catch (e) {
     console.log(e)
@@ -41,5 +41,4 @@ const start = async()=>{
   return all_products
 }
 
-start()
 module.exports = start

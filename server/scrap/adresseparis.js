@@ -20,8 +20,8 @@ const parse = (data) => {
 
       const photo = $(element)
         .find('.product_img_link')
-        .find('img')
-        .attr('src')
+        .find('.img_1e')
+        .attr('data-original')
       
       const link = $(element)
         .find('.product_img_link')

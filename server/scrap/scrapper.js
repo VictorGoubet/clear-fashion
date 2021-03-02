@@ -31,4 +31,4 @@ const axios = require('axios');
   };
   
   
-  module.exports = {scrape}
+  module.exports = scrape

@@ -41,12 +41,12 @@ const sortedByprice = async (db)=>{
 const run = async()=>{
     let MONGODB_DB_NAME = 'clearfashion'
     let db = await connect(MONGODB_DB_NAME)
-    //let products = await scrap()
-    //await insert(db, 'products', products)
+    let products = await scrap()
+    await insert(db, 'products', products)
 
-    //getbrandProduct(db, 'ADRESSE Paris')
+    getbrandProduct(db, 'ADRESSE Paris')
     //lessThanPrice(db, 40)
-    sortedByprice(db)
+    //sortedByprice(db)
 }
 
 run()

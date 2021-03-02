@@ -26,13 +26,13 @@ const getbrandProduct = async (db, brand)=>{
 
 const lessThanPrice = async (db, price)=>{
     const collection = db.collection('products');
-    const res = await collection.find({brand}).toArray();;
+    const res = await collection.find({"price":{$lte:price}}).toArray();;
     console.log(res)
 }
 
 const sortedByprice = async (db)=>{
     const collection = db.collection('products');
-    const res = await collection.find({brand}).toArray();;
+    const res = await collection.find().sort({"price":-1}).toArray();;
     console.log(res)
 }
 
@@ -41,10 +41,12 @@ const sortedByprice = async (db)=>{
 const run = async()=>{
     let MONGODB_DB_NAME = 'clearfashion'
     let db = await connect(MONGODB_DB_NAME)
-    let products = await scrap()
-    await insert(db, 'products', products)
+    //let products = await scrap()
+    //await insert(db, 'products', products)
 
-    getbrandProduct(db, 'ADRESSE Paris')
+    //getbrandProduct(db, 'ADRESSE Paris')
+    //lessThanPrice(db, 40)
+    sortedByprice(db)
 }
 
 run()

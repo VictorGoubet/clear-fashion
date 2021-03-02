@@ -16,7 +16,7 @@ function sandbox(eshop) {
 function del_doublons(tab){
   let new_tab = []
   tab.forEach(a=>{
-    if(a!=undefined && new_tab.filter(x => x.uuid == a.uuid).length==0){
+    if(a!=undefined && new_tab.filter(x => x.uuid == a.uuid || x.photo==a.photo).length==0){
       new_tab.push(a)
     }
   })

@@ -2,7 +2,7 @@
 const scrapper = require('./scrapper')
 const eshop = require('../brands.json');
 
-function sandbox(eshop) {
+function getScrape(eshop) {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop.brand} source`);
     return scrapper.scrape(eshop);
@@ -24,21 +24,22 @@ function del_doublons(tab){
 }
 
 
-const start = async () => {
-  let all_products = []
-  await scrapper.asyncForEach(eshop, async s =>{
-    all_products = all_products.concat(await sandbox(s))
-  })
+const start = async()=>{
+  let promises = [];
+  eshop.forEach(s=>{
+    promises.push(
+        new Promise((resolve, _)=>{
+          resolve(getScrape(s))
+        })
+    );   
+  });
+
+  let all_products = await Promise.all(promises)
+  all_products = all_products.flat()
   all_products = del_doublons(all_products)
   console.log('Number of scraped products: ' + all_products.length)
   return all_products
 }
 
-
-
-
+start()
 module.exports = start
-
-
-
-

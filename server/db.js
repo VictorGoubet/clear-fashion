@@ -11,7 +11,6 @@ const connect = async ()=>{
         db = client.db("clearfashion")
     }
 }
-
 const insert = async (name, data)=>{
     await connect();
     try{
@@ -23,17 +22,26 @@ const insert = async (name, data)=>{
       }
     
 }
-
 const close = () => client.close()
 
 
-// some query
+// some needed queries
 const getProductById = async (id)=>{
     await connect();
     const collection = db.collection('products');
     const res = await collection.find({_id:id}).toArray();;
     return res
 }
+const getFilteredProduct = async (limit, brand, price)=>{
+    await connect();
+    const selector = Object.assign( {}, brand, price);
+    const collection = db.collection('products');
+    const res = await collection.find(selector).limit(limit).toArray();;
+    return res
+}
+
+
+// some other queries
 const getbrandProduct = async (brand)=>{
     await connect();
     const collection = db.collection('products');
@@ -53,4 +61,4 @@ const sortedByprice = async ()=>{
     return res
 }
 
-module.exports = {connect, insert, close, getProductById}
+module.exports = {connect, insert, close, getProductById, getFilteredProduct}

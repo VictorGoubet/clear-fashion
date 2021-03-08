@@ -15,7 +15,6 @@ const axios = require('axios');
 
     let promises = [];
     shoptools.get_links(data, shop.link).forEach(x=>{
-      //console.log(x)
       promises.push(
         new Promise(async (resolve, _)=>{
           let data = await get_data(x)
@@ -23,11 +22,9 @@ const axios = require('axios');
         })
       )
     })
-    //console.log("pending promise.all")
     let res = await Promise.all(promises)
     res = res.flat()
     return res
-
   };
   
   

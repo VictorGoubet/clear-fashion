@@ -25,16 +25,9 @@ function del_doublons(tab){
 
 
 const start = async()=>{
-  let promises = [];
-  eshop.forEach(s=>{
-    promises.push(
-        new Promise((resolve, _)=>{
-          resolve(getScrape(s))
-        })
-    );   
-  });
-
+  let promises = eshop.map(getScrape);
   let all_products = await Promise.all(promises)
+  
   all_products = all_products.flat()
   all_products = del_doublons(all_products)
   console.log('Number of scraped products: ' + all_products.length)

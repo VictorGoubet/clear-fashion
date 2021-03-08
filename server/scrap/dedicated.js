@@ -8,6 +8,7 @@ const parse = (data, url) => {
   return data['products'].map(x =>{
     if(x!=undefined && x.length!= 0){
      return  {'uuid': x['uid'],
+              '_id':  x['uid'],
               'name': x['name'],
               'price': x['price']['priceAsNumber'],
               'photo': x['image'][0],

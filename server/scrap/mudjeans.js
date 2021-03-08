@@ -1,4 +1,5 @@
 const cheerio = require('cheerio');
+const {'v5': uuidv5} = require('uuid');
 const brand = 'Mud Jeans'
 
 const parse = (data, global_url, url) => {
@@ -29,9 +30,10 @@ const parse = (data, global_url, url) => {
 
       const release = '28/01/2021'
 
-      const uuid = parseInt(photo.slice(-10));
+      const uuid = uuidv5(photo, uuidv5.URL);
+      const _id = uuid;
 
-      return {uuid, name, price, photo, link, brand, release, 'categorie':ctg};
+      return {uuid, _id, name, price, photo, link, brand, release, 'categorie':ctg};
     })
     .get();
 };

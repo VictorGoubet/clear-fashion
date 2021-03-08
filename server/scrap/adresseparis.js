@@ -1,4 +1,5 @@
 const cheerio = require('cheerio');
+const {'v5': uuidv5} = require('uuid');
 const brand = 'ADRESSE Paris'
 
 const parse = (data) => {
@@ -29,9 +30,10 @@ const parse = (data) => {
 
       const release = '03/02/2021'
       
-      const uuid = parseInt(link.match(/\d{13}/)[0])
+      const uuid = uuidv5(link, uuidv5.URL);
+      const _id = uuid;
 
-      return {uuid, name, price, photo, link, brand, release, "categorie":'Unisexe'};
+      return {uuid, _id, name, price, photo, link, brand, release, "categorie":'Unisexe'};
     })
     .get();
 };

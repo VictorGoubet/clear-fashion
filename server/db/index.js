@@ -43,7 +43,7 @@ module.exports.insert = async products => {
     // More details
     // https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/#insert-several-document-specifying-an-id-field
     const result = await collection.insertMany(products, {'ordered': false});
-
+    
     return result;
   } catch (error) {
     console.error('🚨 collection.insertMany...', error);

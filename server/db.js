@@ -1,17 +1,19 @@
 const {MongoClient} = require('mongodb');
-const scrap = require("./scrap/index")
 require('dotenv').config();
 
 let client = null;
 let db = null;
 
-const connect = async (MONGODB_DB_NAME)=>{
-    const MONGODB_URI = `mongodb+srv://dbUser:${process.env.dbMdp}@cluster0.cq1hp.mongodb.net/${MONGODB_DB_NAME}?retryWrites=true&w=majority`;
-    client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true, 'useUnifiedTopology': true});
-    db = client.db(MONGODB_DB_NAME)
+const connect = async ()=>{
+    if(!db){
+        const MONGODB_URI = `mongodb+srv://dbUser:${process.env.dbMdp}@cluster0.cq1hp.mongodb.net/$clearfashion?retryWrites=true&w=majority`;
+        client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true, 'useUnifiedTopology': true});
+        db = client.db("clearfashion")
+    }
 }
 
 const insert = async (name, data)=>{
+    await connect();
     try{
         const collection = db.collection(name);
         const result = await collection.insertMany(data, {'ordered': false});
@@ -22,37 +24,33 @@ const insert = async (name, data)=>{
     
 }
 
+const close = () => client.close()
+
+
 // some query
+const getProductById = async (id)=>{
+    await connect();
+    const collection = db.collection('products');
+    const res = await collection.find({_id:id}).toArray();;
+    return res
+}
 const getbrandProduct = async (brand)=>{
+    await connect();
     const collection = db.collection('products');
     const res = await collection.find({brand:brand}).toArray();;
-    console.log(res)
+    return res
 }
-
 const lessThanPrice = async (price)=>{
+    await connect();
     const collection = db.collection('products');
     const res = await collection.find({"price":{$lte:price}}).toArray();;
-    console.log(res)
+    return res
 }
-
 const sortedByprice = async ()=>{
+    await connect();
     const collection = db.collection('products');
     const res = await collection.find().sort({"price":-1}).toArray();;
-    console.log(res)
+    return res
 }
 
-
-
-const run = async()=>{
-    await connect('clearfashion')
-    let products = await scrap()
-    await insert('products', products)
-
-    //await getbrandProduct('ADRESSE Paris')
-    //await lessThanPrice(40)
-    //await sortedByprice()
-
-    client.close()
-}
-
-run()
+module.exports = {connect, insert, close, getProductById}

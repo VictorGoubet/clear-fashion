@@ -49,7 +49,7 @@ const run = async()=>{
     await insert('products', products)
 
     //await getbrandProduct('ADRESSE Paris')
-    await lessThanPrice(40)
+    //await lessThanPrice(40)
     //await sortedByprice()
 
     client.close()

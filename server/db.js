@@ -26,10 +26,17 @@ const close = () => client.close()
 
 
 // some needed queries
+
+const getNumberOfProducts = async ()=>{
+    await connect();
+    const collection = db.collection('products');
+    const res = await collection.countDocuments({});
+    return res
+}
 const getProductById = async (id)=>{
     await connect();
     const collection = db.collection('products');
-    const res = await collection.find({_id:id}).toArray();;
+    const res = await collection.find({_id:id}).toArray();
     return res
 }
 const getFilteredProduct = async (limit, brand, price)=>{
@@ -37,7 +44,7 @@ const getFilteredProduct = async (limit, brand, price)=>{
     await connect();
     const selector = Object.assign( {}, brand, price);
     const collection = db.collection('products');
-    const res = await collection.find(selector).limit(limit).toArray();;
+    const res = await collection.find(selector).limit(limit).toArray();
     return res
 }
 
@@ -62,4 +69,4 @@ const sortedByprice = async ()=>{
     return res
 }
 
-module.exports = {connect, insert, close, getProductById, getFilteredProduct}
+module.exports = {connect, insert, close, getProductById, getFilteredProduct, getNumberOfProducts}

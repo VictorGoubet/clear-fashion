@@ -10,11 +10,12 @@ router.get('/products/search', async (req, res)=>{
     let price = parseFloat(req.query.price)?{price:parseFloat(req.query.price)}:{}
 
     let p = await bdd.getFilteredProduct(limit, brand, price)
-
+    let n = await bdd.getNumberOfProducts()
     res.send({
         limit,
         brand:brand.brand,
         price:price.price,
+        TotalNumberOfProducts:n,
         results:p
 
     })

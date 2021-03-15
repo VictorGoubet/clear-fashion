@@ -1,5 +1,7 @@
 const {MongoClient} = require('mongodb');
+const start = require('./scrap/index.js');
 require('dotenv').config();
+const scrapp = require("./scrap/index.js")
 
 let client = null;
 let db = null;
@@ -21,6 +23,12 @@ const insert = async (name, data)=>{
         console.log(`${error.result.nInserted} products inserted`);
       }
     
+}
+const scrap_insert = async () =>{
+    await connect();
+    let data = await start();
+    await insert('products', data);
+    close();
 }
 const close = () => client.close()
 
@@ -68,5 +76,7 @@ const sortedByprice = async ()=>{
     const res = await collection.find().sort({"price":-1}).toArray();;
     return res
 }
+
+//scrap_insert();
 
 module.exports = {connect, insert, close, getProductById, getFilteredProduct, getNumberOfProducts}

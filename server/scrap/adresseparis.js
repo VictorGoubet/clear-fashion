@@ -4,12 +4,11 @@ const brand = 'ADRESSE Paris'
 
 const parse = (data) => {
   const $ = cheerio.load(data);
-  return $('.product_list .product-container')
+  return $('.product-container .product_list')
     .map((i, element) => {
-      
       const name = $(element)
-        .find('.product-name')
-        .attr('title')
+        .find('.product_img_link')
+        .attr("title")
         .trim()
         .replace(/\s/g, ' ');
 
@@ -25,8 +24,9 @@ const parse = (data) => {
         .attr('data-original')
       
       const link = $(element)
-        .find('.product_img_link')
-        .attr('href').match(/.*.html/)[0]
+        .find('.quick-view')
+        .attr('rel')
+
 
       const release = '03/02/2021'
       

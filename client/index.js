@@ -1,350 +1,308 @@
-// Invoking strict mode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#invoking_strict_mode
 'use strict';
 
-console.log('🚀 This is it.');
+// current products on the page
+let currentProducts = [];
+let currentPagination = {};
+let filtered_products = [];
+let brand_filter = x => true;
+let reasonable_filter = x => true;
+let recent_filter = x => true;
+let favoris_filter = x => true;
 
-const MY_FAVORITE_BRANDS = [{
-  'name': 'Hopaal',
-  'url': 'https://hopaal.com/'
-}, {
-  'name': 'Loom',
-  'url': 'https://www.loom.fr'
-}, {
-  'name': 'ADRESSE',
-  'url': 'https://adresse.paris/'
-}]
 
-//console.table(MY_FAVORITE_BRANDS);
-//console.log(MY_FAVORITE_BRANDS[0]);
-
-/**
- * 🌱
- * Let's go with a very very simple first todo
- * Keep pushing
- * 🌱
- */
-
-// 🎯 TODO: The cheapest t-shirt
-// 0. I have 3 favorite brands stored in MY_FAVORITE_BRANDS variable
-// 1. Create a new variable and assign it the link of the cheapest t-shirt
-// I can find on these e-shops
-// 2. Log the variable
-const cheapest_tshirt = 'https://www.loom.fr/products/le-t-shirt'
-console.log('cheapest_tshirt: ', cheapest_tshirt);
+// inititiate selectors
+const selectShow = document.querySelector('#show-select');
+const selectPage = document.querySelector('#page-select');
+const sectionProducts = document.querySelector('#products');
+const spanNbProducts = document.querySelector('#nbProducts');
+const spanNbNewProducts = document.querySelector('#nbNewProducts');
+const selectBrand = document.querySelector('#brand-select');
+const selectSort = document.querySelector('#sort-select');
+const recentlyReleased = document.querySelector('#recently-released');
+const reasonablePrice = document.querySelector('#reasonable-price');
+const spanP50 = document.querySelector('#p50');
+const spanP90 = document.querySelector('#p90');
+const spanP95 = document.querySelector('#p95');
+const spanLastRelease = document.querySelector('#last-release');
+const favorisInput = document.querySelector('#favoris');
 
 
 
+// Update brands choice
 
-/**
- * 👕
- * Easy 😁?
- * Now we manipulate the variable `marketplace`
- * `marketplace` is a list of products from several brands e-shops
- * The variable is loaded by the file data.js
- * 👕
- */
-
-
-
-// 🎯 TODO: Number of products
-// 1. Create a variable and assign it the number of products
-// 2. Log the variable
-const l = marketplace.length;
-console.log('length of market place: ', l);
-
-
-// 🎯 TODO: Brands name
-// 1. Create a variable and assign it the list of brands name only
-// 2. Log the variable
-// 3. Log how many brands we have
-const brands_name = [];
-marketplace.forEach(article =>{
-  if(!brands_name.includes(article.brand)){
-    brands_name.push(article.brand)
-  }
-})
-console.log('brands_name: ', brands_name);
-console.log('length of brands_name: ', brands_name.length);
-
-
-// 🎯 TODO: Sort by price
-// 1. Create a function to sort the marketplace products by price
-// 2. Create a variable and assign it the list of products by price from lowest to highest
-// 3. Log the variable
-function sort_price(a, b){
-  return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);
-}
-const by_price = [...marketplace].sort(sort_price); //create a copy here
-console.log('marketplace by price: ', by_price);
-
-
-
-// 🎯 TODO: Sort by date
-// 1. Create a function to sort the marketplace objects by products date
-// 2. Create a variable and assign it the list of products by date from recent to old
-// 3. Log the variable
-function sort_date_ascending(a, b){
-  a = Date.parse(a.date);
-  b = Date.parse(b.date);
-  return (a > b) ? 1 : ((b > a) ? -1 : 0);
-}
-const by_date = [...marketplace].sort(sort_date_ascending);
-console.log('marketplace by date: ', by_date);
-
-
-// 🎯 TODO: Filter a specific price range
-// 1. Filter the list of products between 50€ and 100€
-// 2. Log the list
-const filter_price = marketplace.filter(function(e){return 50 <= e.price && e.price <= 100});
-console.log('marketplace between 50€ and 100€: ', filter_price);
-
-
-// 🎯 TODO: Average Basket
-// 1. Determine the average basket of the marketplace
-// 2. Log the average
-const average = marketplace.reduce((total, next) => total + next.price, 0) / marketplace.length;
-console.log('basket average: ', average);
-
-
-
-
-/**
- * 🏎
- * We are almost done with the `marketplace` variable
- * Keep pushing
- * 🏎
- */
-
-// 🎯 TODO: Products by brands
-// 1. Create an object called `brands` to manipulate products by brand name
-// The key is the brand name
-// The value is the array of products
-//
-// Example:
-// const brands = {
-//   'brand-name-1': [{...}, {...}, ..., {...}],
-//   'brand-name-2': [{...}, {...}, ..., {...}],
-//   ....
-//   'brand-name-n': [{...}, {...}, ..., {...}],
-// };
-//
-// 2. Log the variable
-// 3. Log the number of products by brands
-const brands = {};
-marketplace.forEach(article => {
-  try{
-    brands[article.brand].push(article);
-  }
-  catch{
-    brands[article.brand] = [article];
-  }});
-console.log('Article by brands: ', brands);
-
-Object.keys(brands).map(e => console.log('lenght of ',e,': ', brands[e].length));
-
-
-
-// 🎯 TODO: Sort by price for each brand
-// 1. For each brand, sort the products by price, from highest to lowest
-// 2. Log the sort
-const brands_by_price = {};
-Object.keys(brands).forEach(k => {
-  console.log()
-  brands_by_price[k] = [...brands[k]].sort(sort_price);
-});
-console.log('brands_by_price: ', brands_by_price);
-
-
-
-
-
-// 🎯 TODO: Sort by date for each brand
-// 1. For each brand, sort the products by date, from old to recent
-// 2. Log the sort
-function sort_date_descending(a, b){
-  a = Date.parse(a.date);
-  b = Date.parse(b.date);
-  return (a > b) ? -1 : ((b > a) ? 1 : 0);
+function update_brands_name(){
+  let old_value = selectBrand.value
+  selectBrand.innerHTML = '<option>all</option>';
+  
+  const brands_name = [];
+  let my_option;
+  currentProducts.forEach(article =>{
+    if(!brands_name.includes(article.brand)){
+      brands_name.push(article.brand)
+      my_option = document.createElement('option');
+      my_option.innerHTML = article.brand;
+      selectBrand.appendChild(my_option);
+    }
+  })
+  selectBrand.value = brands_name.includes(old_value)? old_value:'all';
 }
 
-const brands_by_date = {};
-Object.keys(brands).forEach(k => {
-  brands_by_date[k] = [...brands[k]].sort(sort_date_descending);
-});
-console.log('brands_by_date: ', brands_by_date);
-
-
-
-
-/**
- * 💶
- * Let's talk about money now
- * Do some Maths
- * 💶
- */
-
-// 🎯 TODO: Compute the p90 price value
-// 1. Compute the p90 price value of each brand
-// The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
-const p90_by_brands = {};
-let index;
-Object.keys(brands_by_price).forEach(k => {
-  index = Math.trunc(0.9 * brands_by_price[k].length)
-  p90_by_brands[k] = brands_by_price[k][index].price;
-});
-console.log('p90_by_brands: ', p90_by_brands);
-
-
-
+const apply_all_filters = (products) =>{
+  let filter = [brand_filter, reasonable_filter, recent_filter, favoris_filter]
+  filter.forEach(f =>{
+    products = products.filter(f)
+  })
+  return products
+}
 
 /**
- * 🧥
- * Cool for your effort.
- * It's almost done
- * Now we manipulate the variable `COTELE_PARIS`
- * `COTELE_PARIS` is a list of products from https://coteleparis.com/collections/tous-les-produits-cotele
- * 🧥
+ * Set global value
+ * @param {Array} result - products to display
+ * @param {Object} meta - pagination meta info
  */
-
-const COTELE_PARIS = [
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/la-baseball-cap-gris',
-    price: 45,
-    name: 'BASEBALL CAP - TAUPE',
-    uuid: 'af07d5a4-778d-56ad-b3f5-7001bf7f2b7d',
-    released: '2021-01-11'
-  },
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/la-chemise-milleraie-navy',
-    price: 85,
-    name: 'CHEMISE MILLERAIE MIXTE - NAVY',
-    uuid: 'd62e3055-1eb2-5c09-b865-9d0438bcf075',
-    released: '2020-12-21'
-  },
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/la-veste-fuchsia',
-    price: 110,
-    name: 'VESTE - FUCHSIA',
-    uuid: 'da3858a2-95e3-53da-b92c-7f3d535a753d',
-    released: '2020-11-17'
-  },
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/la-baseball-cap-camel',
-    price: 45,
-    name: 'BASEBALL CAP - CAMEL',
-    uuid: 'b56c6d88-749a-5b4c-b571-e5b5c6483131',
-    released: '2020-10-19'
-  },
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/la-chemise-milleraie-beige',
-    price: 85,
-    name: 'CHEMISE MILLERAIE MIXTE - BEIGE',
-    uuid: 'f64727eb-215e-5229-b3f9-063b5354700d',
-    released: '2021-01-11'
-  },
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/la-veste-rouge-vermeil',
-    price: 110,
-    name: 'VESTE - ROUGE VERMEIL',
-    uuid: '4370637a-9e34-5d0f-9631-04d54a838a6e',
-    released: '2020-12-21'
-  },
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/la-chemise-milleraie-bordeaux',
-    price: 85,
-    name: 'CHEMISE MILLERAIE MIXTE - BORDEAUX',
-    uuid: '93d80d82-3fc3-55dd-a7ef-09a32053e36c',
-    released: '2020-12-21'
-  },
-  {
-    link: 'https://coteleparis.com//collections/tous-les-produits-cotele/products/le-bob-dylan-gris',
-    price: 45,
-    name: 'BOB DYLAN - TAUPE',
-    uuid: 'f48810f1-a822-5ee3-b41a-be15e9a97e3f',
-    released: '2020-12-21'
-  }
-]
-
-// 🎯 TODO: New released products
-// // 1. Log if we have new products only (true or false)
-// // A new product is a product `released` less than 2 weeks.
-let diff;
-let state = true;
-COTELE_PARIS.forEach(e =>{
-  diff = Math.trunc((Date.now() - Date.parse(e.released)) / (1000 * 3600 * 24)); 
-  if(diff > 2*7){
-    state = false;
-  }
-})
-console.log('Only new released: ', state);
-
-// 🎯 TODO: Reasonable price
-// // 1. Log if coteleparis is a reasonable price shop (true or false)
-// // A reasonable price if all the products are less than 100€
-state = true;
-COTELE_PARIS.forEach(e =>{
-  if(e.price >= 100){
-    state = false;
-  }
-})
-console.log('reasonable price: ', state);
-
-// 🎯 TODO: Find a specific product
-// 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
-// 2. Log the product
-console.log('concerned element: ', COTELE_PARIS.find(e => e.uuid == 'b56c6d88-749a-5b4c-b571-e5b5c6483131'));
-
-
-// 🎯 TODO: Delete a specific product
-// 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
-// 2. Log the new list of product
-const COTELE_PARIS_2 = COTELE_PARIS.filter(e => e.uuid != 'b56c6d88-749a-5b4c-b571-e5b5c6483131');
-console.log('COTELE_PARIS without one item: ', COTELE_PARIS_2)
-
-// 🎯 TODO: Save the favorite product
-let blueJacket = {
-  'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
-  'price': 110,
-  'uuid': 'b4b05398-fee0-4b31-90fe-a794d2ccfaaa'
+const setCurrentProducts = ({data, meta}) => {
+  currentProducts = data;
+  currentPagination = meta;
+  update_brands_name();
+  filtered_products = apply_all_filters(currentProducts)
 };
 
-// we make a copy of blueJacket to jacket
-// and set a new property `favorite` to true
-let jacket = blueJacket;
-jacket.favorite = true;
+/**
+ * Fetch products from api
+ * @param  {Number}  [page=1] - current page to fetch
+ * @param  {Number}  [size=12] - size of the page
+ * @return {Object}
+ */
+const fetchProducts = async (page = 1, size = 12) => {
+  try {
+    const response = await fetch(
+      `https://clear-fashion-server.vercel.app/products/search?limit=${size*page}`
+    );
+    const body = await response.json();
+    const data = body.results.slice(-size);
+    const meta = {currentPage:page, pageSize:size};
+    return {data, meta};
 
-// 1. Log `blueJacket` and `jacket` variables
-// 2. What do you notice?
-console.log(blueJacket, jacket);
-console.log('Notice that when we add a new property to jacket it also add it to blue jacket\nIn fact we have not make a real copy but just a pointer');
-
-blueJacket = {
-  'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
-  'price': 110,
-  'uuid': 'b4b05398-fee0-4b31-90fe-a794d2ccfaaa'
+  } catch (error) {
+    console.error(error);
+    return {currentProducts, currentPagination};
+  }
 };
 
-// 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
-delete jacket.favorite;
-jacket = {...blueJacket};
-jacket.favorite = true;
-console.log(blueJacket, jacket);
-console.log('Now it works !');
+/**
+ * Render list of products
+ * @param  {Array} products
+ */
+const renderProducts = products => {
+  const fragment = document.createDocumentFragment();
+  const div = document.createElement('div');
+  const template = products
+    .map(product => {
+      let favoris = JSON.parse(localStorage.getItem('favoris'))
+      let content = favoris!=null?(favoris.filter(x => x.uuid == product.uuid).length>0?'⭕':'⭐'):'⭐';
+      let url = product.photo.includes('https:')? product.photo:'https:'+product.photo;
+      return `
+      <div class="product" id=${product.uuid}>
+      <button onclick="addFavoris('${product.uuid}','${content}')">${content}</button>
+        <span>${product.brand.charAt(0).toUpperCase() + product.brand.slice(1)}</span>
+        <a href="${product.link}">${product.name}</a>
+        <span>${product.price}€</span>
+        <img class='imgPrdt' src=${url}>
+      </div>
+    `;
+    })
+    .join('');
 
-
+  div.innerHTML = template;
+  fragment.appendChild(div);
+  sectionProducts.innerHTML = '<span class="title-pattern">Products</span>';
+  sectionProducts.appendChild(fragment);
+};
 
 /**
- * 🎬
- * The End
- * 🎬
+ * Render page selector
+ * @param  {Object} pagination
+ */
+const renderPagination = pagination => {
+  const {currentPage, pageSize} = pagination;
+  const n = 1460;
+  const pageN = Math.trunc(n / pageSize) +1;
+  const options = []
+  for(let i=1; i<=pageN; i++){
+      options.push(`<option value="${i}">${i}</option>`) 
+  }
+
+  selectPage.innerHTML = options.join('');
+  selectPage.selectedIndex = currentPage - 1;
+};
+
+ const compute_pk = k =>{
+   let tab = [...filtered_products].sort((a, b) => sort_price(a, b, 1));
+   let index = Math.trunc(k/100 * tab.length)
+   return tab[index].price
+ }
+
+const renderIndicators = pagination => {
+  if(filtered_products.length>0){
+    spanP50.innerHTML = compute_pk(50)+'€';
+    spanP90.innerHTML = compute_pk(90)+'€';
+    spanP95.innerHTML = compute_pk(95)+'€';
+    spanLastRelease.innerHTML = [...filtered_products].sort((a, b) => sort_date(a, b, -1))[0].release;
+    spanNbNewProducts.innerHTML = filtered_products.reduce((total, x) => total+(Math.trunc((Date.now() - Date.parse(x.release)) / (1000 * 3600 * 24)) < 2*7?1:0), 0);
+    spanNbProducts.innerHTML = filtered_products.length;
+  }
+  else{
+    spanP50.innerHTML = 0
+    spanP90.innerHTML = 0
+    spanP95.innerHTML = 0
+    spanLastRelease.innerHTML = '----'
+    spanNbNewProducts.innerHTML = 0
+    spanNbProducts.innerHTML = 0
+  }
+  
+};
+
+const render = (products, pagination) => {
+  renderProducts(products);
+  renderPagination(pagination);
+  renderIndicators(pagination);
+};
+
+/**
+ * Declaration of all Listeners
  */
 
-// 🎯 TODO: Save in localStorage
-// 1. Save MY_FAVORITE_BRANDS in the localStorage
-// 2. log the localStorage
-localStorage.clear();
-console.log('Storage now: ', localStorage);
-localStorage.setItem('MY_FAVORITE_BRANDS', JSON.stringify(MY_FAVORITE_BRANDS));
-console.log('After saving: ', localStorage);
+/**
+ * Select the number of products to display
+ * @type {[type]}
+ */
+selectShow.addEventListener('change', event => {
+  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+    .then(setCurrentProducts)
+    .then(() => render(filtered_products, currentPagination));
+});
 
-console.log('MY_FAVORITE_BRANDS from local storage: ', JSON.parse(localStorage.getItem('MY_FAVORITE_BRANDS')));
+// Feature 1 Browse pages
+
+selectPage.addEventListener('change', event => {
+  fetchProducts(parseInt(event.target.value), currentPagination.pageSize)
+    .then(setCurrentProducts)
+    .then(() => render(filtered_products, currentPagination));
+});
+
+// Feature 2 brand selection
+
+selectBrand.addEventListener('change', event => {
+  brand_filter = x =>{return event.target.value=='all'? true:x.brand == event.target.value}
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+// Feature 3 date selection
+
+recentlyReleased.addEventListener('change', function(){
+
+  if(this.checked){
+    recent_filter = x => {return  Math.trunc((Date.now() - Date.parse(x.release)) / (1000 * 3600 * 24)) < 2*7}
+  }
+  else{
+    recent_filter = x => true
+  }
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+// Feature 4 price selection
+
+reasonablePrice.addEventListener('change', function(){
+
+  if(this.checked){
+    reasonable_filter = x => {return x.price <= 50};
+  }
+  else{
+    reasonable_filter = x => true;
+  }
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+// Feature 5-6 price selection
+
+function sort_price(a, b, order){
+  return (a.price > b.price) ? order : ((b.price > a.price) ? -order : 0);
+}
+
+function sort_date(a, b, order){
+  a = Date.parse(a.release);
+  b = Date.parse(b.release);
+  return (a > b) ? order : ((b > a) ? -order : 0);
+}
+
+selectSort.addEventListener('change', event=>{
+
+  switch(event.target.value){
+    case 'price-desc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_price(a, b, -1));
+      break;
+    case 'price-asc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_price(a, b, 1));
+      break;
+    case 'date-desc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_date(a, b, 1));
+      break;
+    case 'date-asc':
+      currentProducts = [...currentProducts].sort((a, b) => sort_date(a, b, -1));
+      break;
+  }
+
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+// Feature 12 favoris
+
+function addFavoris(id, content){
+  let x = currentProducts.filter(x => x.uuid == id)[0]
+  let favoris = JSON.parse(localStorage.getItem('favoris'))
+  
+  if(favoris == null){
+    localStorage.setItem('favoris', JSON.stringify([x]));
+  }
+  else if(favoris.filter(x => x.uuid == id).length==0){
+    favoris.push(x);
+    localStorage.setItem('favoris', JSON.stringify(favoris));
+  }
+  else{
+    favoris = favoris.filter(x => x.uuid != id)
+    localStorage.setItem('favoris', JSON.stringify(favoris));
+  }
+  render(filtered_products, currentPagination);
+}
+
+// Feature 13: filter favoris 
+
+
+favorisInput.addEventListener('change', function(){
+
+  if(this.checked){
+    let favoris = JSON.parse(localStorage.getItem('favoris'))
+    favoris_filter = favoris!=null? x =>favoris.filter(y => y.uuid == x.uuid).length>0:x=>false;
+  }
+  else{
+    favoris_filter = x =>true;
+  }
+  filtered_products = apply_all_filters(currentProducts)
+  render(filtered_products, currentPagination);
+});
+
+
+//---------------------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', () =>
+  fetchProducts()
+  .then(setCurrentProducts)
+  .then(() => render(filtered_products, currentPagination))
+);
+
+
+

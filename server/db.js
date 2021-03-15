@@ -33,6 +33,7 @@ const getProductById = async (id)=>{
     return res
 }
 const getFilteredProduct = async (limit, brand, price)=>{
+    limit = limit<0?0:limit;
     await connect();
     const selector = Object.assign( {}, brand, price);
     const collection = db.collection('products');

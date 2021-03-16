@@ -28,7 +28,7 @@ const parse = (data, global_url, url) => {
         .find('a')
         .attr('href');
 
-      const release = (new Date).toLocaleDateString();
+      const release = (new Date).toLocaleDateString("en-US");
 
       const uuid = uuidv5(photo, uuidv5.URL);
       const _id = uuid;

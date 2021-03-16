@@ -108,8 +108,7 @@ const renderProducts = products => {
  */
 const renderPagination = pagination => {
   const {currentPage, pageSize} = pagination;
-  const n = totalRes;
-  const pageN = Math.trunc(n / pageSize) +1;
+  const pageN = Math.trunc(totalRes / pageSize) +1;
   const options = []
   for(let i=1; i<=pageN; i++){
       options.push(`<option value="${i}">${i}</option>`) 

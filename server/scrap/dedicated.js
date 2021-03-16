@@ -14,7 +14,7 @@ const parse = (data, url) => {
               'photo': x['image'][0],
               'link': url+x['canonicalUri'],
               'brand': brand,
-              'release':(new Date).toLocaleDateString(),
+              'release':(new Date).toLocaleDateString("en-US"),
               'categorie':ctg['men'].includes(x['id'])? 'Men':ctg['women'].includes(x['id'])?'Women':"Kids"
             }
     } 

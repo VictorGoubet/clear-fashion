@@ -27,7 +27,7 @@ const parse = data => {
 
       const uuid = uuidv5(link, uuidv5.URL);
       const _id = uuid;
-      const release = (new Date).toLocaleDateString();
+      const release = (new Date).toLocaleDateString("en-US");
 
       return {uuid, _id, name, price, photo, link, brand, release, "categorie":'Unisexe'};
     })

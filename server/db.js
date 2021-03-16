@@ -41,10 +41,10 @@ const getProductById = async (id)=>{
     const res = await collection.find({_id:id}).toArray();
     return res
 }
-const getFilteredProduct = async (limit, brand, price)=>{
+const getFilteredProduct = async (limit, brand, price, categorie)=>{
     limit = limit<0?0:limit;
     await connect();
-    const selector = Object.assign( {}, brand, price);
+    const selector = Object.assign( {}, brand, price, categorie);
     const collection = db.collection('products');
     const n = await collection.countDocuments(selector);
     const res = await collection.find(selector).limit(limit).toArray();

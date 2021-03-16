@@ -85,6 +85,21 @@ a:hover {
 /*//////////////////////////////////////////////////////////////////
 [ Content ]*/
 
+
+button{
+  padding:8px;
+  margin:5px;
+  border-radius: 50px;
+  cursor:pointer;
+  background-color:white;
+  outline: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
 .background-pattern{
   width: 100%;  
   min-height: 100vh;
@@ -126,13 +141,13 @@ a:hover {
 .option {
   width: 22%;
   float:left;
-  padding:40px;
+  padding:20px;
 }
 
 .products {
   width: 43%;
   float:left;
-  padding:40px;
+  padding:20px;
   background:rgba(0, 0, 0, 0.05);
   border-radius: 5px;
   overflow: auto;
@@ -149,7 +164,7 @@ a:hover {
 .indicators{
   width: 35%;
   float:left;
-  padding:40px;
+  padding:20px;
 }
 
 .indicator{

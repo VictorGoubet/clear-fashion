@@ -6,10 +6,11 @@ const bdd = require('./db.js');
 router.get('/products/search', async (req, res)=>{
 
     let brand = req.query.brand?{brand:req.query.brand}:{}
+    let categorie = req.query.categorie?{categorie:req.query.categorie}:{}
     let limit = parseInt(req.query.limit)?parseInt(req.query.limit):12
     let price = parseFloat(req.query.price)?{price:parseFloat(req.query.price)}:{}
 
-    let result = await bdd.getFilteredProduct(limit, brand, price)
+    let result = await bdd.getFilteredProduct(limit, brand, price, categorie)
 
     res.send({
         limit,

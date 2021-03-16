@@ -29,7 +29,7 @@ const parse = data => {
       const _id = uuid;
       const release = (new Date).toLocaleDateString("en-US");
 
-      return {uuid, _id, name, price, photo, link, brand, release, "categorie":'Unisexe'};
+      return {uuid, _id, name, price, photo, link, brand, release, "categorie":'Men'};
     })
     .get();
 };

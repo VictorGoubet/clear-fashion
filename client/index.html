@@ -35,7 +35,7 @@
 				</div>
 
 				<div id="brand" class="div-select">
-					<span class="label-select">By brands</span>
+					<span class="label-select">Brands</span>
 					<select name="brand" id="brand-select" class="selection-2">
 						<option value="all">all</option>
 						<option value="Mud%20Jeans">Mud Jeans</option>
@@ -44,6 +44,15 @@
 					</select>
 				</div>
 
+				<div id="sexe" class="div-select">
+					<span class="label-select">Sexe</span>
+					<select name="sexe" id="sexe-select" class="selection-2">
+						<option value="all">all</option>
+						<option value="Women">Women</option>
+						<option value="Men">Men</option>
+						<option value="Unisexe">Kids</option>
+					</select>
+				</div>
 
 				<div id="sort" class="div-select">
 					<span class="label-select">Sort</span>
@@ -55,20 +64,19 @@
 						  <option value="date-desc">Anciently released</option>
 					</select>
 				</div>
-
+				<p>Select only products with:</p>
 				<div id="reasonableprice">
 					<input type="checkbox" id="reasonable-price" name="price">
-					<label for="scales">By reasonable price</label>
+					<label for="scales">Reasonable price</label>
 				</div>   
 				
 				<div id="recentlyreleased">
 					<input type="checkbox" id="recently-released" name="released">
-					<label for="scales">By recently released</label>
+					<label for="scales">Recently released</label>
 				</div>
-
 				<div id="favorisdiv">
-					<input type="checkbox" id="favoris" name="fav">
-					<label for="scales">By favoris</label>
+					<button onclick="showFav()" id="favoris">Show favoris</button>
+					<button onclick="showAllProd()">Back to filtered products</button>
 				</div>
 			</section>
 

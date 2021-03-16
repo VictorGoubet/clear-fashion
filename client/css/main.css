@@ -40,6 +40,7 @@
 body, html {
 	height: 100%;
 	font-family: Poppins-Regular, sans-serif;
+  overflow: hidden;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -99,6 +100,15 @@ button{
 }
 
 
+
+.products::-webkit-scrollbar {
+  width: 4px;            
+}
+
+.products::-webkit-scrollbar-thumb {
+  background-color: black;
+  border-radius: 20px;     
+}
 
 .background-pattern{
   width: 100%;  

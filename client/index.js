@@ -296,7 +296,7 @@ function addFavoris(id, content){
 
 const getAllFav = async (fav)=>{
   let res = []
-  if(favoris !=null){
+  if(fav !=null){
     res = await Promise.all(
       fav.map(async x=>{
       let p = await fetch(`https://clear-fashion-server.vercel.app/products/${x.uuid}`);

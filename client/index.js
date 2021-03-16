@@ -1,6 +1,7 @@
 'use strict';
 
 // current products on the page
+var currentBrand = 'all';
 let currentProducts = [];
 let currentPagination = {};
 let filtered_products = [];
@@ -8,6 +9,7 @@ let brand_filter = x => true;
 let reasonable_filter = x => true;
 let recent_filter = x => true;
 let favoris_filter = x => true;
+var totalRes = 0;
 
 
 // inititiate selectors
@@ -28,25 +30,6 @@ const favorisInput = document.querySelector('#favoris');
 
 
 
-// Update brands choice
-
-function update_brands_name(){
-  let old_value = selectBrand.value
-  selectBrand.innerHTML = '<option>all</option>';
-  
-  const brands_name = [];
-  let my_option;
-  currentProducts.forEach(article =>{
-    if(!brands_name.includes(article.brand)){
-      brands_name.push(article.brand)
-      my_option = document.createElement('option');
-      my_option.innerHTML = article.brand;
-      selectBrand.appendChild(my_option);
-    }
-  })
-  selectBrand.value = brands_name.includes(old_value)? old_value:'all';
-}
-
 const apply_all_filters = (products) =>{
   let filter = [brand_filter, reasonable_filter, recent_filter, favoris_filter]
   filter.forEach(f =>{
@@ -62,8 +45,8 @@ const apply_all_filters = (products) =>{
  */
 const setCurrentProducts = ({data, meta}) => {
   currentProducts = data;
-  currentPagination = meta;
-  update_brands_name();
+  currentPagination = {currentPage:meta.currentPage, pageSize:meta.pageSize};
+  currentBrand = meta.currentBrand;
   filtered_products = apply_all_filters(currentProducts)
 };
 
@@ -73,14 +56,14 @@ const setCurrentProducts = ({data, meta}) => {
  * @param  {Number}  [size=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12) => {
+const fetchProducts = async (page = 1, size = 12, brand="all") => {
   try {
-    const response = await fetch(
-      `https://clear-fashion-server.vercel.app/products/search?limit=${size*page}`
-    );
+    const l = (`https://clear-fashion-server.vercel.app/products/search?limit=${size*page}`+(brand=="all"?"":`&brand=${brand}`))
+    const response = await fetch(l);
     const body = await response.json();
     const data = body.results.slice(-size);
-    const meta = {currentPage:page, pageSize:size};
+    totalRes = body.TotalNumberOfProducts
+    const meta = {currentPage:page, pageSize:size, currentBrand:brand};
     return {data, meta};
 
   } catch (error) {
@@ -125,7 +108,7 @@ const renderProducts = products => {
  */
 const renderPagination = pagination => {
   const {currentPage, pageSize} = pagination;
-  const n = 1460;
+  const n = totalRes;
   const pageN = Math.trunc(n / pageSize) +1;
   const options = []
   for(let i=1; i<=pageN; i++){
@@ -177,7 +160,7 @@ const render = (products, pagination) => {
  * @type {[type]}
  */
 selectShow.addEventListener('change', event => {
-  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+  fetchProducts(currentPagination.currentPage, parseInt(event.target.value), currentBrand)
     .then(setCurrentProducts)
     .then(() => render(filtered_products, currentPagination));
 });
@@ -185,7 +168,7 @@ selectShow.addEventListener('change', event => {
 // Feature 1 Browse pages
 
 selectPage.addEventListener('change', event => {
-  fetchProducts(parseInt(event.target.value), currentPagination.pageSize)
+  fetchProducts(parseInt(event.target.value), currentPagination.pageSize, currentBrand)
     .then(setCurrentProducts)
     .then(() => render(filtered_products, currentPagination));
 });
@@ -193,9 +176,9 @@ selectPage.addEventListener('change', event => {
 // Feature 2 brand selection
 
 selectBrand.addEventListener('change', event => {
-  brand_filter = x =>{return event.target.value=='all'? true:x.brand == event.target.value}
-  filtered_products = apply_all_filters(currentProducts)
-  render(filtered_products, currentPagination);
+  fetchProducts(currentPagination.currentPage, currentPagination.pageSize, event.target.value)
+    .then(setCurrentProducts)
+    .then(() => render(filtered_products, currentPagination));
 });
 
 // Feature 3 date selection

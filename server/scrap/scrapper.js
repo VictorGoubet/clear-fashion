@@ -24,6 +24,7 @@ const scrape = async shop => {
   })
   let res = await Promise.all(promises)
   res = res.flat()
+  console.log(shop.brand, res.length)
   return res
 };
 

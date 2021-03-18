@@ -270,7 +270,11 @@ selectSort.addEventListener('change', event=>{
 // Feature 12 favoris
 
 const DispForFav = ()=>{
-  sectionProducts.innerHTML = `<span class="title-pattern" onClick="window.location.reload();">Favoris</span>` + sectionProducts.innerHTML.slice(72);
+  let n = filtered_products.length>0?110:72
+  let nprod = filtered_products.length>0?`<p>${filtered_products.length} products</p>`:''
+  
+  
+  sectionProducts.innerHTML = `<span class="title-pattern" onClick="window.location.reload();">Favoris</span> ${nprod}` + sectionProducts.innerHTML.slice(n);
   select.forEach(x=>{
     x.disabled = true;
   })

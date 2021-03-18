@@ -102,7 +102,16 @@ const renderProducts = (products) => {
 
   div.innerHTML = template;
   fragment.appendChild(div);
-  sectionProducts.innerHTML = '<span class="title-pattern">Products</span>';
+  sectionProducts.innerHTML = '<span class="title-pattern" onClick="window.location.reload();">Products</span>';
+  
+
+  if(filtered_products.length==0){
+    sectionProducts.innerHTML += "<br><h1 style='text-align:center'>Nothing here</h1>"
+    sectionProducts.innerHTML += "<img src='https://appstickers-cdn.appadvice.com/1152350727/818820893/060f27ec2ea902c93ee203ac3f653ac0-6.png'>"
+  }
+  else{
+    sectionProducts.innerHTML += `<p>show ${currentPagination.pageSize} on ${totalRes} products</p>`
+  }
   sectionProducts.appendChild(fragment);
 };
 
@@ -261,10 +270,11 @@ selectSort.addEventListener('change', event=>{
 // Feature 12 favoris
 
 const DispForFav = ()=>{
-  sectionProducts.innerHTML = `<span class="title-pattern">Favoris</span>` + sectionProducts.innerHTML.slice(43);
+  sectionProducts.innerHTML = `<span class="title-pattern" onClick="window.location.reload();">Favoris</span>` + sectionProducts.innerHTML.slice(72);
   select.forEach(x=>{
     x.disabled = true;
   })
+  
 }
 
 function addFavoris(id, content){

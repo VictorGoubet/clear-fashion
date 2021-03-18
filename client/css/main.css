@@ -100,7 +100,6 @@ button{
 }
 
 
-
 .products::-webkit-scrollbar {
   width: 4px;            
 }
@@ -121,12 +120,11 @@ button{
   flex-wrap: wrap;
   justify-content: center;
   padding: 15px;
-  background: #a64bf4;
-  background: -webkit-linear-gradient(45deg, #00dbde, #fc00ff);
-  background: -o-linear-gradient(45deg, #00dbde, #fc00ff);
-  background: -moz-linear-gradient(45deg, #00dbde, #fc00ff);
-  background: linear-gradient(45deg, #00dbde, #fc00ff);
-  
+  background: #7A82CD;
+  background: -webkit-linear-gradient( 268deg,  #7A82CD 4.1%,#979ED8 74.3% );
+  background: -o-linear-gradient( 268deg,  #7A82CD 4.1%,#979ED8 74.3% );
+  background: -moz-linear-gradient( 268deg,  #7A82CD 4.1%,#979ED8 74.3% );
+  background-image: linear-gradient( 268deg,  #7A82CD 4.1%,#979ED8 74.3% );  
   
 }
 
@@ -146,6 +144,7 @@ button{
   line-height: 1.2;
   text-align: center;
   padding-bottom: 44px;
+  cursor: pointer;
 }
 
 .option {

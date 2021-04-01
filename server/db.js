@@ -1,14 +1,15 @@
 const {MongoClient} = require('mongodb');
-const start = require('./scrap/index.js');
-require('dotenv').config();
-const scrapp = require("./scrap/index.js")
+const scrap = require('./scrap/index.js');
+if (process.env.NODE_ENV !== 'PROD') {
+    require('dotenv').config();
+}
 
 let client = null;
 let db = null;
 
 const connect = async ()=>{
     if(!db){
-        const MONGODB_URI = `mongodb+srv://dbUser:${process.env.dbMdp}@cluster0.cq1hp.mongodb.net/$clearfashion?retryWrites=true&w=majority`;
+        const MONGODB_URI = `mongodb+srv://dbUser:${process.env.DB_MDP}@cluster0.cq1hp.mongodb.net/$clearfashion?retryWrites=true&w=majority`;
         client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true, 'useUnifiedTopology': true});
         db = client.db("clearfashion")
     }
@@ -26,7 +27,7 @@ const insert = async (name, data)=>{
 }
 const scrap_insert = async () =>{
     await connect();
-    let data = await start();
+    let data = await scrap();
     await insert('products', data);
     close();
 }
@@ -72,6 +73,6 @@ const sortedByprice = async ()=>{
     return res
 }
 
-//scrap_insert();
+scrap_insert();
 
 module.exports = {connect, insert, close, getProductById, getFilteredProduct}

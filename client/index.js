@@ -104,15 +104,20 @@ const renderProducts = (products) => {
   fragment.appendChild(div);
   sectionProducts.innerHTML = '<span class="title-pattern" onClick="window.location.reload();">Products</span>';
   
-
   if(filtered_products.length==0){
     sectionProducts.innerHTML += "<br><h1 style='text-align:center'>Nothing here</h1>"
     sectionProducts.innerHTML += "<img src='https://appstickers-cdn.appadvice.com/1152350727/818820893/060f27ec2ea902c93ee203ac3f653ac0-6.png'>"
+    sectionProducts.appendChild(fragment);
   }
   else{
-    sectionProducts.innerHTML += `<p>show ${currentPagination.pageSize} on ${totalRes} products</p>`
+    sectionProducts.innerHTML += `<p>show ${(currentPagination.currentPage-1)*currentPagination.pageSize}-${currentPagination.currentPage*currentPagination.pageSize} on ${totalRes} products</p>`
+    sectionProducts.appendChild(fragment);
+    if(currentPagination.currentPage+1<Math.trunc(totalRes / currentPagination.pageSize) +1){
+      sectionProducts.innerHTML += '<button onClick="nextPage();">Next page</button>'
+    }
+    
   }
-  sectionProducts.appendChild(fragment);
+  
 };
 
 /**
@@ -334,6 +339,14 @@ function showAllProd(){
   render(filtered_products, currentPagination);
 }
 
+
+function nextPage(){
+  selectPage.value = currentPagination.currentPage+1
+  fetchProducts(currentPagination.currentPage+1, currentPagination.pageSize, currentBrand, currentCategorie)
+    .then(setCurrentProducts)
+    .then(() => render(filtered_products, currentPagination))
+    .then(()=>sectionProducts.scrollTo(0, 0))
+}
 
 //---------------------------------------------------------------------
 
